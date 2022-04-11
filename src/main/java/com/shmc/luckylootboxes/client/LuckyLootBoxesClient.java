@@ -6,8 +6,7 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public class LuckyLootBoxesClient implements ClientModInitializer {
-    @Override
-    public void onInitializeClient() {
 
-    }
+  @Override
+  public void onInitializeClient() {}
 }
