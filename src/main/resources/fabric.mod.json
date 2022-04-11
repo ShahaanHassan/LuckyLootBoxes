@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "luckylootboxes",
+  "version": "${version}",
+  "name": "Luckylootboxes",
+  "description": "Injecting a sense of pride and accomplishment into Minecraft through surprise mechanics",
+  "authors": [],
+  "contact": {},
+  "license": "GPL-3.0",
+  "icon": "assets/luckylootboxes/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.shmc.luckylootboxes.client.LuckyLootBoxesClient"
+    ],
+    "main": [
+      "com.shmc.luckylootboxes.LuckyLootBoxes"
+    ]
+  },
+  "mixins": [
+    "luckylootboxes.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.13.3",
+    "fabric": "*",
+    "minecraft": "1.18.2"
+  }
+}
