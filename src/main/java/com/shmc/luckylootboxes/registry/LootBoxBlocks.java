@@ -1,36 +1,39 @@
 package com.shmc.luckylootboxes.registry;
 
 import com.shmc.luckylootboxes.block.BeginnerLootBoxBlock;
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.minecraft.block.Block;
 import net.minecraft.block.Material;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
 import static com.shmc.luckylootboxes.LuckyLootBoxes.MOD_ID;
 
-public class LootBoxBlocks {
+public final class LootBoxBlocks {
 
-  public static final BeginnerLootBoxBlock BEGINNER_LOOT_BOX_BLOCK =
-      new BeginnerLootBoxBlock(
-          FabricBlockSettings.of(Material.METAL).strength(2.0f).requiresTool());
+  public static final Map<String, Block> BLOCKS = new HashMap<>();
 
-  public static final ItemGroup LOOT_BOX_BLOCK_ITEM_GROUP =
-      FabricItemGroupBuilder.create(new Identifier(MOD_ID, "loot_box_blocks")).build();
+  public static final Block BEGINNER_LOOT_BOX_BLOCK = createBlock("beginner_loot_box_block", () -> new BeginnerLootBoxBlock(defaultLootBlockSettings()));
 
   private LootBoxBlocks() {}
 
-  public static void init() {
-    Registry.register(
-        Registry.BLOCK, new Identifier(MOD_ID, "beginner_loot_box_block"), BEGINNER_LOOT_BOX_BLOCK);
+  private static FabricBlockSettings defaultLootBlockSettings() {
+    return FabricBlockSettings.of(Material.METAL).strength(2.0f).requiresTool();
+  }
 
-    Registry.register(
-        Registry.ITEM,
-        new Identifier(MOD_ID, "beginner_loot_box_block"),
-        new BlockItem(
-            BEGINNER_LOOT_BOX_BLOCK, new FabricItemSettings().group(LOOT_BOX_BLOCK_ITEM_GROUP)));
+  private static <T extends Block> Block createBlock(String id, Supplier<T> blockSupplier) {
+    T block = blockSupplier.get();
+    BLOCKS.put(id, block);
+    return block;
+  }
+
+  public static void init() {
+    for (Map.Entry<String, Block> entry: BLOCKS.entrySet()) {
+      Registry.register(Registry.BLOCK, new Identifier(MOD_ID, entry.getKey()), entry.getValue());
+    }
   }
 }
