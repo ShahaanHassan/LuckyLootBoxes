@@ -7,6 +7,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContext;
@@ -17,6 +18,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -36,33 +38,52 @@ public abstract class AbstractLootBoxBlock extends Block implements BlockEntityP
   }
 
   @Override
-  public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult blockHitResult) {
+  public ActionResult onUse(
+      BlockState state,
+      World world,
+      BlockPos pos,
+      PlayerEntity player,
+      Hand hand,
+      BlockHitResult blockHitResult) {
 
-    if (world.isClient) {
-      return ActionResult.SUCCESS;
-    } else {
-      LootTable lootTable =
-          Objects.requireNonNull(world.getServer())
-              .getLootManager()
-              .getTable(getLootTableIdentifier());
-      LootContext.Builder builder =
-          new LootContext.Builder((ServerWorld) world).random(seed);
-      lootTable.generateLoot(
-          builder.build(LootContextTypes.EMPTY), stack -> dropReward(world, pos, stack));
-      return ActionResult.CONSUME;
+    if (hand == Hand.MAIN_HAND && canPull(getHeldItem(player))) {
+      if (world.isClient) {
+        return ActionResult.SUCCESS;
+      } else {
+        LootTable lootTable =
+            Objects.requireNonNull(world.getServer())
+                .getLootManager()
+                .getTable(getLootTableIdentifier());
+        LootContext.Builder builder = new LootContext.Builder((ServerWorld) world).random(seed);
+        lootTable.generateLoot(
+            builder.build(LootContextTypes.EMPTY), stack -> dropReward(world, player, pos, stack));
+        player.getInventory().getMainHandStack().decrement(coinCost());
+      }
     }
+    return ActionResult.CONSUME;
   }
+
+  protected boolean haveEnough(ItemStack itemStack) {
+    return itemStack.getCount() >= coinCost();
+  }
+
+  protected abstract boolean canPull(ItemStack itemStack);
+
+  protected abstract int coinCost();
 
   private Identifier getLootTableIdentifier() {
     return new Identifier(
         MOD_ID, String.format("loot_box/%s", Registry.BLOCK.getId(this).getPath()));
   }
 
-  private void dropReward(World world, BlockPos pos, ItemStack stack) {
+  private ItemStack getHeldItem(PlayerEntity player) {
+    return player.getInventory().getMainHandStack();
+  }
+
+  private void dropReward(World world, PlayerEntity player, BlockPos pos, ItemStack stack) {
     double x = pos.getX() + 0.5f;
     double y = pos.getY() + 1.0f - EntityType.ITEM.getHeight() / 2.0f;
     double z = pos.getZ() + 0.5f;
-
     if (!world.isClient() && !stack.isEmpty()) {
       ItemEntity itemEntity = new ItemEntity(world, x, y, z, stack);
       itemEntity.setToDefaultPickupDelay();

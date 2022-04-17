@@ -1,4 +1,5 @@
 {
   "block.luckylootboxes.beginner_loot_box_block": "Beginner Loot Box",
-  "itemGroup.luckylootboxes.loot_box_blocks": "Loot Boxes"
+  "itemGroup.luckylootboxes.loot_boxes": "Loot Boxes",
+  "item.luckylootboxes.copper_minecraft_coin": "Copper Minecraft Coin"
 }
