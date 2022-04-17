@@ -4,8 +4,7 @@
   "package": "com.shmc.luckylootboxes.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-  ],
-  "client": [
+    "LootContextTypesInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

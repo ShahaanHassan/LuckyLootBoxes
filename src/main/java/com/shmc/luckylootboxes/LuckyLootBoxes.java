@@ -3,6 +3,7 @@ package com.shmc.luckylootboxes;
 import com.shmc.luckylootboxes.registry.LootBoxBlockEntities;
 import com.shmc.luckylootboxes.registry.LootBoxBlocks;
 import com.shmc.luckylootboxes.registry.LootBoxItems;
+import com.shmc.luckylootboxes.registry.LootBoxLootContextTypes;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,5 +19,6 @@ public class LuckyLootBoxes implements ModInitializer {
     LootBoxBlocks.init();
     LootBoxBlockEntities.init();
     LootBoxItems.init();
+    LootBoxLootContextTypes.init();
   }
 }
