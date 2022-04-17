@@ -8,7 +8,7 @@ import java.util.function.Consumer;
 
 public final class LootBoxLootContextTypes {
 
-  public static final LootContextType LOOT_BOX_CONTEXT =
+  public static final LootContextType LOOT_BOX =
       LootContextTypesInvoker.register("lootbox", createLootBoxLootContextType());
 
   private LootBoxLootContextTypes() {}
