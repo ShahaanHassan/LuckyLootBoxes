@@ -58,27 +58,33 @@ public abstract class AbstractLootBoxBlock extends Block implements BlockEntityP
                 .parameter(LootContextParameters.THIS_ENTITY, player)
                 .luck(player.getLuck());
         lootTable.generateLoot(
-            builder.build(lootTable.getType()), stack -> dropReward(world, player, pos, stack));
-        player.getInventory().getMainHandStack().decrement(coinCost());
+            builder.build(lootTable.getType()), stack -> dropReward(world, pos, stack));
+        player.getInventory().getMainHandStack().decrement(ticketCost());
       }
     }
     return ActionResult.CONSUME;
   }
 
-  protected boolean haveEnough(ItemStack itemStack) {
-    return itemStack.getCount() >= coinCost();
+  protected boolean canPull(ItemStack itemStack) {
+    return correctTicket(itemStack) && haveEnough(itemStack);
   }
 
-  protected abstract boolean canPull(ItemStack itemStack);
+  protected boolean haveEnough(ItemStack itemStack) {
+    return itemStack.getCount() >= ticketCost();
+  }
 
-  protected abstract int coinCost();
+  protected abstract boolean correctTicket(ItemStack itemStack);
+
+  protected int ticketCost() {
+    return 1;
+  }
 
   private Identifier getLootTableIdentifier() {
     return new Identifier(
         MOD_ID, String.format("loot_box/%s", Registry.BLOCK.getId(this).getPath()));
   }
 
-  private void dropReward(World world, PlayerEntity player, BlockPos pos, ItemStack stack) {
+  private void dropReward(World world, BlockPos pos, ItemStack stack) {
     double x = pos.getX() + 0.5f;
     double y = pos.getY() + 1.0f - EntityType.ITEM.getHeight() / 2.0f;
     double z = pos.getZ() + 0.5f;

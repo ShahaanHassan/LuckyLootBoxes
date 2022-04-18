@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "luckylootboxes:large_copper_coin_bundle"
+    }
+  ],
+  "result": {
+    "item": "luckylootboxes:copper_minecraft_coin",
+    "count": 64
+  }
+}

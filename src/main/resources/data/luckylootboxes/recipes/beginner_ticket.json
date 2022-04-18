@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "luckylootboxes:copper_minecraft_coin"
+    }
+  },
+  "result": {
+    "item": "luckylootboxes:beginner_ticket",
+    "count": 1
+  }
+}

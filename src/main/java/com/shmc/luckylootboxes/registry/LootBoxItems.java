@@ -1,6 +1,6 @@
 package com.shmc.luckylootboxes.registry;
 
-import com.shmc.luckylootboxes.item.CopperMinecraftCoinItem;
+import com.shmc.luckylootboxes.item.*;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Block;
@@ -22,23 +22,39 @@ public final class LootBoxItems {
 
   public static final Map<String, Item> ITEMS = new HashMap<>();
 
-  private LootBoxItems() {}  public static final ItemGroup LOOT_BOX_ITEM_GROUP = createLootBoxItemGroup();
+  public static final ItemGroup LOOT_BOX_ITEM_GROUP = createLootBoxItemGroup();
+
+  public static final Item COPPER_MINECRAFT_COIN_ITEM =
+          createItem(
+                  "copper_minecraft_coin", () -> new CopperMinecraftCoinItem(getDefaultItemSettings()));
+  public static final Item SMALL_COPPER_COIN_BUNDLE_ITEM =
+          createItem(
+                  "small_copper_coin_bundle", () -> new SmallCopperCoinBundleItem(getDefaultItemSettings()));
+  public static final Item MEDIUM_COPPER_COIN_BUNDLE_ITEM =
+          createItem(
+                  "medium_copper_coin_bundle", () -> new MediumCopperCoinBundleItem(getDefaultItemSettings()));
+  public static final Item LARGE_COPPER_COIN_BUNDLE_ITEM =
+          createItem(
+                  "large_copper_coin_bundle", () -> new LargeCopperCoinBundleItem(getDefaultItemSettings()));
+  public static final Item BEGINNER_TICKET_ITEM =
+          createItem(
+                  "beginner_ticket", () -> new BeginnerTicketItem(getDefaultItemSettings()));
+
+  private LootBoxItems() {}
 
   private static void createItems() {
     for (Map.Entry<String, Item> entry : ITEMS.entrySet()) {
       Registry.register(Registry.ITEM, new Identifier(MOD_ID, entry.getKey()), entry.getValue());
     }
-  }  public static final Item COPPER_MINECRAFT_COIN_ITEM =
-      createCoinItem(
-          "copper_minecraft_coin", () -> new CopperMinecraftCoinItem(getDefaultCoinItemSettings()));
+  }
 
-  private static <T extends Item> Item createCoinItem(String id, Supplier<T> itemSupplier) {
+  private static <T extends Item> Item createItem(String id, Supplier<T> itemSupplier) {
     T item = itemSupplier.get();
     ITEMS.put(id, item);
     return item;
   }
 
-  private static FabricItemSettings getDefaultCoinItemSettings() {
+  private static FabricItemSettings getDefaultItemSettings() {
     return new FabricItemSettings().group(LOOT_BOX_ITEM_GROUP);
   }
 
@@ -67,8 +83,4 @@ public final class LootBoxItems {
     createBlockItems();
     createItems();
   }
-
-
-
-
 }

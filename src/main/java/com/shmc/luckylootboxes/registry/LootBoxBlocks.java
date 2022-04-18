@@ -17,7 +17,9 @@ public final class LootBoxBlocks {
 
   public static final Map<String, Block> BLOCKS = new HashMap<>();
 
-  public static final Block BEGINNER_LOOT_BOX_BLOCK = createBlock("beginner_loot_box_block", () -> new BeginnerLootBoxBlock(defaultLootBlockSettings()));
+  public static final Block BEGINNER_LOOT_BOX_BLOCK =
+      createBlock(
+          "beginner_loot_box_block", () -> new BeginnerLootBoxBlock(defaultLootBlockSettings()));
 
   private LootBoxBlocks() {}
 
@@ -32,7 +34,7 @@ public final class LootBoxBlocks {
   }
 
   public static void init() {
-    for (Map.Entry<String, Block> entry: BLOCKS.entrySet()) {
+    for (Map.Entry<String, Block> entry : BLOCKS.entrySet()) {
       Registry.register(Registry.BLOCK, new Identifier(MOD_ID, entry.getKey()), entry.getValue());
     }
   }
