@@ -10,6 +10,7 @@ import java.util.List;
 
 import static com.shmc.luckylootboxes.util.StylesUtil.getGoldTooltip;
 
+//TOOD: implement ticket decrementing with finishUsing()
 public class BeginnerTicketItem extends Item {
 
   public BeginnerTicketItem(Settings settings) {
