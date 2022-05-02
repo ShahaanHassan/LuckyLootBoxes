@@ -23,7 +23,7 @@ public enum PullRarity {
 
     public static PullRarity getRarity(int probability) {
         for (PullRarity rarity : PullRarity.values()) {
-            if (rarity.getProbability() > probability) {
+            if (rarity.getProbability() >= probability) {
                 return rarity;
             }
         }
