@@ -1,16 +1,21 @@
 package com.shmc.luckylootboxes.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
+import com.shmc.luckylootboxes.LuckyLootBoxes;
+import com.shmc.luckylootboxes.api.ItemEntryAccessor;
+import com.shmc.luckylootboxes.api.LeafEntryAccessor;
+import com.shmc.luckylootboxes.util.PullRarity;
+import net.fabricmc.fabric.api.loot.v1.FabricLootPool;
+import net.fabricmc.fabric.api.loot.v1.FabricLootSupplier;
+import net.minecraft.block.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.entry.LootPoolEntry;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -19,14 +24,15 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 
 import static com.shmc.luckylootboxes.LuckyLootBoxes.MOD_ID;
 
-public abstract class AbstractLootBoxBlock extends Block implements BlockEntityProvider {
+public abstract class AbstractLootBoxBlock extends BlockWithEntity {
 
   private final Random seed;
 
@@ -43,7 +49,6 @@ public abstract class AbstractLootBoxBlock extends Block implements BlockEntityP
       PlayerEntity player,
       Hand hand,
       BlockHitResult blockHitResult) {
-
     if (hand == Hand.MAIN_HAND && canPull(player.getInventory().getMainHandStack())) {
       if (world.isClient) {
         return ActionResult.SUCCESS;
@@ -57,12 +62,27 @@ public abstract class AbstractLootBoxBlock extends Block implements BlockEntityP
                 .random(seed)
                 .parameter(LootContextParameters.THIS_ENTITY, player)
                 .luck(player.getLuck());
-        lootTable.generateLoot(
-            builder.build(lootTable.getType()), stack -> dropReward(world, pos, stack));
-        player.getInventory().getMainHandStack().decrement(ticketCost());
+//        lootTable.generateLoot(
+//            builder.build(lootTable.getType()), stack -> dropReward(world, pos, stack));
+        List<ItemStack> loot = lootTable.generateLoot(
+                builder.build(lootTable.getType()));
+        ItemStack drop = loot.stream().findFirst().orElseGet(() -> new ItemStack(Items.DIRT));
+        PullRarity a = getRarity(lootTable, drop);
+        dropReward(world, pos, drop);
+        LuckyLootBoxes.LOGGER.info(a.toString());
+        if (!player.isCreative()) {
+          player.getInventory().getMainHandStack().decrement(ticketCost());
+        }
       }
     }
     return ActionResult.CONSUME;
+  }
+
+  private PullRarity getRarity(LootTable lt, ItemStack item) {
+    Optional<LootPoolEntry> itemEntry = ((FabricLootSupplier) lt).getPools().stream()
+            .findFirst().flatMap(pool -> ((FabricLootPool) pool).getEntries().stream()
+                    .filter(entry -> ((ItemEntryAccessor) entry).getItem() == item.getItem()).findFirst());
+    return itemEntry.map(e -> (PullRarity.getRarity(((LeafEntryAccessor) e).getWeight()))).orElse(PullRarity.COMMON);
   }
 
   protected boolean canPull(ItemStack itemStack) {
@@ -95,9 +115,14 @@ public abstract class AbstractLootBoxBlock extends Block implements BlockEntityP
     }
   }
 
-  @Nullable
+//  @Nullable
+//  @Override
+//  public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+//    return new BeginnerLootBoxEntity(pos, state);
+//  }
+
   @Override
-  public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-    return null;
+  public BlockRenderType getRenderType(BlockState state) {
+    return BlockRenderType.MODEL;
   }
 }

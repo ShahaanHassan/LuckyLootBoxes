@@ -4,7 +4,9 @@
   "package": "com.shmc.luckylootboxes.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "LootContextTypesInvoker"
+    "LootContextTypesInvoker",
+    "LeafEntryHooks",
+    "ItemEntryHooks"
   ],
   "injectors": {
     "defaultRequire": 1
