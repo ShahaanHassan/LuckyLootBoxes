@@ -1,6 +1,6 @@
 package com.shmc.luckylootboxes.registry;
 
-import com.shmc.luckylootboxes.blockentity.BeginnerLootBoxEntity;
+import com.shmc.luckylootboxes.block.entity.BeginnerLootBoxEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -11,16 +11,21 @@ import net.minecraft.util.registry.Registry;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.shmc.luckylootboxes.LuckyLootBoxes.LOGGER;
 import static com.shmc.luckylootboxes.LuckyLootBoxes.MOD_ID;
+import static com.shmc.luckylootboxes.registry.LootBoxBlocks.BEGINNER_LOOT_BOX_BLOCK;
 
 public final class LootBoxBlockEntities {
     public static final Map<String, BlockEntityType<?>> BLOCK_ENTITIES = new HashMap<>();
-    public static final BlockEntityType<?> BEGINNER_LOOT_BOX_ENTITY = createBlockEntityType("beginner_loot_box_block_entity", BeginnerLootBoxEntity::new);
+    public static final BlockEntityType<?> BEGINNER_LOOT_BOX_ENTITY = createBlockEntityType("beginner_loot_box_block_entity", BeginnerLootBoxEntity::new, BEGINNER_LOOT_BOX_BLOCK);
 
 
     private LootBoxBlockEntities() {}
 
     private static <T extends BlockEntity> BlockEntityType<? extends T> createBlockEntityType(String id, FabricBlockEntityTypeBuilder.Factory<? extends T> factory, Block... block) {
+        if (block.length == 0) {
+            LOGGER.warn("Block entity: {} is not registered to any blocks", id);
+        }
         BlockEntityType<? extends T> type = FabricBlockEntityTypeBuilder.create(factory, block).build(null);
         BLOCK_ENTITIES.put(id, type);
         return type;
