@@ -1,5 +1,6 @@
 package com.shmc.luckylootboxes.block.entity;
 
+import com.shmc.luckylootboxes.enums.PullRarity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -10,16 +11,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
-import static com.shmc.luckylootboxes.LuckyLootBoxes.LOGGER;
-import static com.shmc.luckylootboxes.registry.LootBoxBlockEntities.BEGINNER_LOOT_BOX_ENTITY;
+import static com.shmc.luckylootboxes.block.AbstractLootBoxBlock.LOOTBOX_RARITY;
+import static com.shmc.luckylootboxes.registry.LootBoxBlockEntities.LOOT_BOX_BLOCK_ENTITY;
 
-public class BeginnerLootBoxEntity extends BlockEntity {
-
+public class LootBoxBlockEntity extends BlockEntity {
   private boolean rolling;
+  private PullRarity rarity;
   private int timer;
 
-  public BeginnerLootBoxEntity(BlockPos pos, BlockState state) {
-    super(BEGINNER_LOOT_BOX_ENTITY, pos, state);
+  public LootBoxBlockEntity(BlockPos pos, BlockState state) {
+    super(LOOT_BOX_BLOCK_ENTITY, pos, state);
     resetState();
   }
 
@@ -27,12 +28,16 @@ public class BeginnerLootBoxEntity extends BlockEntity {
     this.rolling = rolling;
   }
 
-  public void setTimer(int timer) {
-    this.timer = timer;
+  public void decrementTimer() {
+    this.timer -= 1;
   }
 
   public boolean getRolling() {
     return this.rolling;
+  }
+
+  public PullRarity getRarity() {
+    return this.rarity;
   }
 
   public int getTimer() {
@@ -40,8 +45,17 @@ public class BeginnerLootBoxEntity extends BlockEntity {
   }
 
   public void resetState() {
-    this.rolling = false;
-    this.timer = 500;
+    setState(PullRarity.COMMON, false);
+  }
+
+  public void setPulling(PullRarity rarity) {
+    setState(rarity, true);
+  }
+
+  public void setState(PullRarity rarity, boolean rolling) {
+    this.rarity = rarity;
+    this.rolling = rolling;
+    this.timer = 20;
   }
 
   @Override
@@ -50,12 +64,14 @@ public class BeginnerLootBoxEntity extends BlockEntity {
 
     rolling = tag.getBoolean("rolling");
     timer = tag.getInt("timer");
+    rarity = PullRarity.valueOf(tag.getString("rarity"));
   }
 
   @Override
   public void writeNbt(NbtCompound tag) {
     tag.putBoolean("rolling", rolling);
     tag.putInt("timer", timer);
+    tag.putString("rarity", rarity.toString());
 
     super.writeNbt(tag);
   }
@@ -72,14 +88,12 @@ public class BeginnerLootBoxEntity extends BlockEntity {
   }
 
   public static void tick(World world, BlockPos pos, BlockState state, BlockEntity be) {
-    BeginnerLootBoxEntity b = (BeginnerLootBoxEntity) be;
-//    LOGGER.info(Integer.toString(b.getTimer()));
-    if (b.getTimer() <= 0) {
-      b.setTimer(50);
-//      LOGGER.info("I have ticked");
+    LootBoxBlockEntity lbe = (LootBoxBlockEntity) be;
+    if (lbe.getTimer() <= 0) {
+      world.setBlockState(pos, state.with(LOOTBOX_RARITY, PullRarity.BASE));
+      lbe.resetState();
     } else {
-      b.setTimer(b.getTimer() - 1);
+      lbe.decrementTimer();
     }
-    b.markDirty();
   }
 }
