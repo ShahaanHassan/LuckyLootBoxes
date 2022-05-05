@@ -8,7 +8,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-import static com.shmc.luckylootboxes.util.StylesUtil.getGoldTooltip;
+import static com.shmc.luckylootboxes.util.TooltipStylesUtil.getGoldTooltip;
 
 //TOOD: implement ticket decrementing with finishUsing()
 public class BeginnerTicketItem extends Item {

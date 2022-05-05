@@ -5,9 +5,9 @@ import net.minecraft.text.Style;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-public class StylesUtil {
+public class TooltipStylesUtil {
 
-  private StylesUtil() {}
+  private TooltipStylesUtil() {}
 
   public static MutableText getGoldTooltip(String id) {
     return new TranslatableText(id)

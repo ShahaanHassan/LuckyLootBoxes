@@ -1,6 +1,6 @@
 package com.shmc.luckylootboxes.registry;
 
-import com.shmc.luckylootboxes.block.entity.BeginnerLootBoxEntity;
+import com.shmc.luckylootboxes.block.entity.LootBoxBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntity;
@@ -17,7 +17,7 @@ import static com.shmc.luckylootboxes.registry.LootBoxBlocks.BEGINNER_LOOT_BOX_B
 
 public final class LootBoxBlockEntities {
     public static final Map<String, BlockEntityType<?>> BLOCK_ENTITIES = new HashMap<>();
-    public static final BlockEntityType<?> BEGINNER_LOOT_BOX_ENTITY = createBlockEntityType("beginner_loot_box_block_entity", BeginnerLootBoxEntity::new, BEGINNER_LOOT_BOX_BLOCK);
+    public static final BlockEntityType<?> LOOT_BOX_BLOCK_ENTITY = createBlockEntityType("beginner_loot_box_block_entity", LootBoxBlockEntity::new, BEGINNER_LOOT_BOX_BLOCK);
 
 
     private LootBoxBlockEntities() {}

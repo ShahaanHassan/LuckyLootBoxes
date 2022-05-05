@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-import static com.shmc.luckylootboxes.util.StylesUtil.getGoldTooltip;
+import static com.shmc.luckylootboxes.util.TooltipStylesUtil.getGoldTooltip;
 
 public class LargeCopperCoinBundleItem extends AbstractCopperCoinBundle {
 
