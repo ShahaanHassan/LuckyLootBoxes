@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "luckylootboxes:block/beginner_loot_box_block_common"
+  }
+}

@@ -1,5 +1,10 @@
 {
   "variants": {
-    "": { "model": "luckylootboxes:block/beginner_loot_box_block" }
+    "rarity=base": { "model": "luckylootboxes:block/beginner_loot_box_block" },
+    "rarity=common": { "model": "luckylootboxes:block/beginner_loot_box_block_common" },
+    "rarity=uncommon": { "model": "luckylootboxes:block/beginner_loot_box_block_uncommon" },
+    "rarity=rare": { "model": "luckylootboxes:block/beginner_loot_box_block_rare" },
+    "rarity=epic": { "model": "luckylootboxes:block/beginner_loot_box_block_epic" },
+    "rarity=legendary": { "model": "luckylootboxes:block/beginner_loot_box_block_legendary" }
   }
 }
