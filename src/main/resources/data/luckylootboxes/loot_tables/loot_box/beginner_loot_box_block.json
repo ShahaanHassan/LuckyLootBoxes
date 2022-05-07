@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:lootbox",
+  "type": "minecraft:lucky_lootbox",
   "pools": [
     {
       "rolls": 1,
@@ -33,11 +33,6 @@
           "type": "minecraft:item",
           "name": "minecraft:emerald",
           "weight": 1
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
         }
       ]
     }

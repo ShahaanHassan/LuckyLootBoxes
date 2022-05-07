@@ -1,6 +1,5 @@
 package com.shmc.luckylootboxes.block;
 
-import com.shmc.luckylootboxes.LuckyLootBoxes;
 import com.shmc.luckylootboxes.api.ItemEntryAccessor;
 import com.shmc.luckylootboxes.api.LeafEntryAccessor;
 import com.shmc.luckylootboxes.block.entity.LootBoxBlockEntity;
@@ -50,8 +49,8 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
 
   protected AbstractLootBoxBlock(Settings settings) {
     super(settings);
-    setDefaultState(getStateManager().getDefaultState().with(LOOTBOX_RARITY, PullRarity.BASE));
     this.seed = new Random();
+    setDefaultState(getStateManager().getDefaultState().with(LOOTBOX_RARITY, PullRarity.BASE));
   }
 
   @Override
@@ -83,7 +82,6 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
           PullRarity pullRarity = getRarity(lootTable, drop);
           world.playSound(null, pos, getSoundEvent(pullRarity), SoundCategory.MASTER, 1f, 1f);
           world.setBlockState(pos, state.with(LOOTBOX_RARITY, pullRarity));
-          LuckyLootBoxes.LOGGER.info("{}", world.getBlockState(pos).get(LOOTBOX_RARITY));
           be.setPulling(pullRarity);
           dropReward(world, pos, drop);
           if (!player.isCreative()) {

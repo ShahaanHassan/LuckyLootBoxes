@@ -6,7 +6,7 @@ import static com.shmc.luckylootboxes.registry.LootBoxItems.COPPER_MINECRAFT_COI
 
 public abstract class AbstractCopperCoinBundle extends AbstractCoinBundleItem {
 
-    public AbstractCopperCoinBundle(Settings settings, int coinReward) {
+    protected AbstractCopperCoinBundle(Settings settings, int coinReward) {
         super(settings, coinReward);
     }
 

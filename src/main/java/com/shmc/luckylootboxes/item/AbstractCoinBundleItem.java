@@ -13,7 +13,7 @@ public abstract class AbstractCoinBundleItem extends Item {
 
     private final int coinReward;
 
-    public AbstractCoinBundleItem(Settings settings, int coinReward) {
+    protected AbstractCoinBundleItem(Settings settings, int coinReward) {
         super(settings);
         this.coinReward = coinReward;
     }
@@ -31,7 +31,7 @@ public abstract class AbstractCoinBundleItem extends Item {
             if (!player.getInventory().insertStack(coinStack())) {
                 player.dropStack(coinStack());
             }
-            if (!player.getAbilities().creativeMode) {
+            if (!player.isCreative()) {
                 stack.decrement(1);
             }
             if (stack.isEmpty()) {
