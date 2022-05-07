@@ -153,11 +153,11 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
 
   private SoundEvent getSoundEvent(PullRarity pullRarity) {
     return switch (pullRarity) {
-      case LEGENDARY -> SoundEvents.ENTITY_DRAGON_FIREBALL_EXPLODE;
-      case EPIC -> SoundEvents.ENTITY_WITHER_SHOOT;
-      case RARE -> SoundEvents.ENTITY_AXOLOTL_ATTACK;
-      case UNCOMMON -> SoundEvents.BLOCK_CHEST_OPEN;
-      default -> SoundEvents.ENTITY_ARROW_SHOOT;
+      case LEGENDARY -> SoundEvents.ENTITY_FIREWORK_ROCKET_TWINKLE;
+      case EPIC -> SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME;
+      case RARE -> SoundEvents.BLOCK_HONEY_BLOCK_HIT;
+      case UNCOMMON -> SoundEvents.BLOCK_METAL_HIT;
+      default -> SoundEvents.BLOCK_BONE_BLOCK_HIT;
     };
   }
 }
