@@ -1,6 +1,8 @@
 {
-  "parent": "block/cube_all",
+  "parent": "block/orientable",
   "textures": {
-    "all": "luckylootboxes:block/beginner_loot_box_block_epic"
+    "top": "luckylootboxes:block/beginner_loot_box_block_epic_top",
+    "front": "luckylootboxes:block/beginner_loot_box_block_epic",
+    "side": "luckylootboxes:block/beginner_loot_box_block_epic"
   }
 }
