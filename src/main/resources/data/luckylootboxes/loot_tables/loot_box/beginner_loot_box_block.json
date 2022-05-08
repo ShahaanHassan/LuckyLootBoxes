@@ -5,8 +5,8 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "minecraft:arrow",
+          "type": "minecraft:loot_table",
+          "name": "luckylootboxes:loot_box/beginner_loot_box_common",
           "weight": 80
         },
         {

@@ -6,7 +6,8 @@
   "mixins": [
     "LootContextTypesInvoker",
     "LeafEntryHooks",
-    "ItemEntryHooks"
+    "ItemEntryHooks",
+    "LootTableEntryHooks"
   ],
   "injectors": {
     "defaultRequire": 1

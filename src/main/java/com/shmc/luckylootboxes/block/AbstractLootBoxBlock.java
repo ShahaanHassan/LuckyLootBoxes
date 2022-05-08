@@ -2,11 +2,15 @@ package com.shmc.luckylootboxes.block;
 
 import com.shmc.luckylootboxes.api.ItemEntryAccessor;
 import com.shmc.luckylootboxes.api.LeafEntryAccessor;
+import com.shmc.luckylootboxes.api.LootTableEntryAccessor;
 import com.shmc.luckylootboxes.block.entity.LootBoxBlockEntity;
 import com.shmc.luckylootboxes.enums.PullRarity;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPool;
 import net.fabricmc.fabric.api.loot.v1.FabricLootSupplier;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -18,6 +22,7 @@ import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContext;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.entry.LootPoolEntry;
+import net.minecraft.loot.entry.LootPoolEntryTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
@@ -43,9 +48,9 @@ import static com.shmc.luckylootboxes.registry.LootBoxBlockEntities.LOOT_BOX_BLO
 
 public abstract class AbstractLootBoxBlock extends BlockWithEntity {
 
-  private final Random seed;
-
   public static final EnumProperty<PullRarity> LOOTBOX_RARITY = EnumProperty.of("rarity", PullRarity.class);
+
+  private final Random seed;
 
   protected AbstractLootBoxBlock(Settings settings) {
     super(settings);
@@ -66,10 +71,7 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
       if (world.isClient) {
         return ActionResult.SUCCESS;
       } else {
-        LootTable lootTable =
-            Objects.requireNonNull(world.getServer())
-                .getLootManager()
-                .getTable(getLootTableIdentifier());
+        LootTable lootTable = getLootTable(getLootTableIdentifier(), world);
         LootContext.Builder builder =
             new LootContext.Builder((ServerWorld) world)
                 .random(seed)
@@ -79,7 +81,7 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
                 builder.build(lootTable.getType()));
         if (!loot.isEmpty()) {
           ItemStack drop = loot.get(0);
-          PullRarity pullRarity = getRarity(lootTable, drop);
+          PullRarity pullRarity = getRarity(lootTable, drop, world);
           world.playSound(null, pos, getSoundEvent(pullRarity), SoundCategory.MASTER, 1f, 1f);
           world.setBlockState(pos, state.with(LOOTBOX_RARITY, pullRarity));
           be.setPulling(pullRarity);
@@ -109,6 +111,8 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
     return BlockRenderType.MODEL;
   }
 
+  protected abstract boolean correctTicket(ItemStack itemStack);
+
   @Override
   protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
     builder.add(LOOTBOX_RARITY);
@@ -122,17 +126,42 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
     return itemStack.getCount() >= ticketCost();
   }
 
-  protected abstract boolean correctTicket(ItemStack itemStack);
-
   protected int ticketCost() {
     return 1;
   }
 
-  private PullRarity getRarity(LootTable lt, ItemStack itemStack) {
-    Optional<LootPoolEntry> itemEntry = ((FabricLootSupplier) lt).getPools().stream()
+  private LootTable getLootTable(Identifier id, World world) {
+    return Objects.requireNonNull(world.getServer())
+            .getLootManager()
+            .getTable(id);
+  }
+
+  private PullRarity getRarity(LootTable lootTable, ItemStack itemStack, World world) {
+    Optional<LootPoolEntry> itemEntry = findInLootTable(lootTable, itemStack, world);
+    return itemEntry.map(entry -> (PullRarity.getRarity(((LeafEntryAccessor) entry).getWeight()))).orElse(PullRarity.COMMON);
+  }
+
+  private Optional<LootPoolEntry> findInLootTable(LootTable lootTable, ItemStack itemStack, World world) {
+    return ((FabricLootSupplier) lootTable).getPools().stream()
             .findFirst().flatMap(pool -> ((FabricLootPool) pool).getEntries().stream()
-                    .filter(entry -> ((ItemEntryAccessor) entry).getItem() == itemStack.getItem()).findFirst());
-    return itemEntry.map(e -> (PullRarity.getRarity(((LeafEntryAccessor) e).getWeight()))).orElse(PullRarity.COMMON);
+                    .filter(entry -> filterEntry(entry, itemStack, world)).findFirst());
+  }
+
+  private boolean filterEntry(LootPoolEntry entry, ItemStack itemStack, World world) {
+    if (entry.getType() == LootPoolEntryTypes.ITEM) {
+      return filterItemEntry(entry, itemStack);
+    } else if (entry.getType() == LootPoolEntryTypes.LOOT_TABLE) {
+      LootTable lootTable = getLootTable(((LootTableEntryAccessor) entry).getId(), world);
+      return ((FabricLootSupplier) lootTable).getPools().stream()
+              .findFirst().filter(pool -> ((FabricLootPool) pool).getEntries().stream()
+                      .anyMatch(e -> filterEntry(e, itemStack, world))).isPresent();
+    }
+    // Only Item and LootTable entries are supported
+    return false;
+  }
+
+  private boolean filterItemEntry(LootPoolEntry entry, ItemStack itemStack) {
+    return ((ItemEntryAccessor) entry).getItem() == itemStack.getItem();
   }
 
   private Identifier getLootTableIdentifier() {

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:lucky_lootbox",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stick",
+          "weight": 80
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:dirt",
+          "weight": 20
+        }
+      ]
+    }
+  ]
+}
+
