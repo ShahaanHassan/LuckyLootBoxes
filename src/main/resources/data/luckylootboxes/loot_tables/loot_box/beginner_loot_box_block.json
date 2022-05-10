@@ -7,31 +7,26 @@
         {
           "type": "minecraft:loot_table",
           "name": "luckylootboxes:loot_box/beginner_loot_box_common",
-          "weight": 80
+          "weight": 50
         },
         {
-          "type": "minecraft:item",
-          "name": "minecraft:bucket",
-          "weight": 20
+          "type": "minecraft:loot_table",
+          "name": "luckylootboxes:loot_box/beginner_loot_box_uncommon",
+          "weight": 25
         },
         {
-          "type": "minecraft:item",
-          "name": "minecraft:torch",
-          "weight": 16
+          "type": "minecraft:loot_table",
+          "name": "luckylootboxes:loot_box/beginner_loot_box_rare",
+          "weight": 19
         },
         {
-          "type": "minecraft:item",
-          "name": "minecraft:stone",
+          "type": "minecraft:loot_table",
+          "name": "luckylootboxes:loot_box/beginner_loot_box_epic",
           "weight": 5
         },
         {
-          "type": "minecraft:item",
-          "name": "minecraft:diamond",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:emerald",
+          "type": "minecraft:loot_table",
+          "name": "luckylootboxes:loot_box/beginner_loot_box_legendary",
           "weight": 1
         }
       ]
