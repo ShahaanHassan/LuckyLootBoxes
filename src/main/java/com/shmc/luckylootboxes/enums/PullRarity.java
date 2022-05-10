@@ -5,10 +5,10 @@ import net.minecraft.util.StringIdentifiable;
 public enum PullRarity implements StringIdentifiable {
     BASE("base", 0),
     LEGENDARY("legendary", 1),
-    EPIC("epic", 4),
-    RARE("rare", 15),
-    UNCOMMON("uncommon", 20),
-    COMMON("common", 60);
+    EPIC("epic", 5),
+    RARE("rare", 19),
+    UNCOMMON("uncommon", 25),
+    COMMON("common", 50);
 
     private final String name;
     private final int probability;
