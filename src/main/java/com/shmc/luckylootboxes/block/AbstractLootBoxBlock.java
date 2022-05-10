@@ -67,28 +67,25 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
       Hand hand,
       BlockHitResult blockHitResult) {
     LootBoxBlockEntity be = (LootBoxBlockEntity) Objects.requireNonNull(world.getBlockEntity(pos));
-    if (!be.getRolling() && hand == Hand.MAIN_HAND && canPull(player.getInventory().getMainHandStack())) {
-      if (world.isClient) {
-        return ActionResult.SUCCESS;
-      } else {
-        LootTable lootTable = getLootTable(getLootTableIdentifier(), world);
-        LootContext.Builder builder =
-            new LootContext.Builder((ServerWorld) world)
-                .random(seed)
-                .parameter(LootContextParameters.THIS_ENTITY, player)
-                .luck(player.getLuck());
-        List<ItemStack> loot = lootTable.generateLoot(
-                builder.build(lootTable.getType()));
-        if (!loot.isEmpty()) {
-          ItemStack drop = loot.get(0);
-          PullRarity pullRarity = getRarity(lootTable, drop, world);
-          world.playSound(null, pos, getSoundEvent(pullRarity), SoundCategory.MASTER, 1f, 1f);
-          world.setBlockState(pos, state.with(LOOTBOX_RARITY, pullRarity));
-          be.setPulling(pullRarity);
-          dropReward(world, pos, drop);
-          if (!player.isCreative()) {
-            player.getInventory().getMainHandStack().decrement(ticketCost());
-          }
+    if (world.isClient) {
+      return ActionResult.SUCCESS;
+    } else if (!be.getRolling() && hand == Hand.MAIN_HAND && canPull(player.getInventory().getMainHandStack())) {
+      LootTable lootTable = getLootTable(getLootTableIdentifier(), world);
+      LootContext.Builder builder = new LootContext.Builder((ServerWorld) world)
+              .random(seed)
+              .parameter(LootContextParameters.THIS_ENTITY, player)
+              .luck(player.getLuck());
+      List<ItemStack> loot = lootTable.generateLoot(
+              builder.build(lootTable.getType()));
+      if (!loot.isEmpty()) {
+        ItemStack drop = loot.get(0);
+        PullRarity pullRarity = getRarity(lootTable, drop, world);
+        world.playSound(null, pos, getSoundEvent(pullRarity), SoundCategory.MASTER, 1f, 1f);
+        world.setBlockState(pos, state.with(LOOTBOX_RARITY, pullRarity));
+        be.setPulling(pullRarity);
+        dropReward(world, pos, drop);
+        if (!player.isCreative()) {
+          player.getInventory().getMainHandStack().decrement(ticketCost());
         }
       }
     }
@@ -138,7 +135,7 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
 
   private PullRarity getRarity(LootTable lootTable, ItemStack itemStack, World world) {
     Optional<LootPoolEntry> itemEntry = findInLootTable(lootTable, itemStack, world);
-    return itemEntry.map(entry -> (PullRarity.getRarity(((LeafEntryAccessor) entry).getWeight()))).orElse(PullRarity.COMMON);
+    return itemEntry.map(entry -> PullRarity.getRarity(((LeafEntryAccessor) entry).getWeight())).orElse(PullRarity.COMMON);
   }
 
   private Optional<LootPoolEntry> findInLootTable(LootTable lootTable, ItemStack itemStack, World world) {
@@ -149,7 +146,7 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
 
   private boolean filterEntry(LootPoolEntry entry, ItemStack itemStack, World world) {
     if (entry.getType() == LootPoolEntryTypes.ITEM) {
-      return filterItemEntry(entry, itemStack);
+      return ((ItemEntryAccessor) entry).getItem() == itemStack.getItem();
     } else if (entry.getType() == LootPoolEntryTypes.LOOT_TABLE) {
       LootTable lootTable = getLootTable(((LootTableEntryAccessor) entry).getId(), world);
       return ((FabricLootSupplier) lootTable).getPools().stream()
@@ -158,10 +155,6 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
     }
     // Only Item and LootTable entries are supported
     return false;
-  }
-
-  private boolean filterItemEntry(LootPoolEntry entry, ItemStack itemStack) {
-    return ((ItemEntryAccessor) entry).getItem() == itemStack.getItem();
   }
 
   private Identifier getLootTableIdentifier() {
