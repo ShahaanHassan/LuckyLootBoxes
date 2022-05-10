@@ -12,7 +12,7 @@ import static com.shmc.luckylootboxes.util.TooltipStylesUtil.getGoldTooltip;
 public class LargeCopperCoinBundleItem extends AbstractCopperCoinBundle {
 
     public LargeCopperCoinBundleItem(Settings settings) {
-        super(settings, 64);
+        super(settings, 48);
     }
 
     @Override
