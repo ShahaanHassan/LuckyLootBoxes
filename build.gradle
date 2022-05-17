@@ -8,7 +8,7 @@ version = project.mod_version
 group = project.maven_group
 
 curseforge {
-    apiKey = System.getenv("curseforge")
+    apiKey = System.getenv("curseforge") ?: ""
     project {
         id = '624386'
         releaseType = 'alpha'
