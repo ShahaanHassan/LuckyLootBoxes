@@ -16,16 +16,11 @@ import static com.shmc.luckylootboxes.registry.LootBoxBlockEntities.LOOT_BOX_BLO
 
 public class LootBoxBlockEntity extends BlockEntity {
   private boolean rolling;
-  private PullRarity rarity;
   private int timer;
 
   public LootBoxBlockEntity(BlockPos pos, BlockState state) {
     super(LOOT_BOX_BLOCK_ENTITY, pos, state);
     resetState();
-  }
-
-  public void setRolling(boolean rolling) {
-    this.rolling = rolling;
   }
 
   public void decrementTimer() {
@@ -36,24 +31,19 @@ public class LootBoxBlockEntity extends BlockEntity {
     return this.rolling;
   }
 
-  public PullRarity getRarity() {
-    return this.rarity;
-  }
-
   public int getTimer() {
     return this.timer;
   }
 
   public void resetState() {
-    setState(PullRarity.COMMON, false);
+    setState(false);
   }
 
-  public void setPulling(PullRarity rarity) {
-    setState(rarity, true);
+  public void setPulling() {
+    setState(true);
   }
 
-  public void setState(PullRarity rarity, boolean rolling) {
-    this.rarity = rarity;
+  public void setState(boolean rolling) {
     this.rolling = rolling;
     this.timer = 20;
   }
@@ -61,18 +51,14 @@ public class LootBoxBlockEntity extends BlockEntity {
   @Override
   public void readNbt(NbtCompound tag) {
     super.readNbt(tag);
-
     rolling = tag.getBoolean("rolling");
     timer = tag.getInt("timer");
-    rarity = PullRarity.valueOf(tag.getString("rarity"));
   }
 
   @Override
   public void writeNbt(NbtCompound tag) {
     tag.putBoolean("rolling", rolling);
     tag.putInt("timer", timer);
-    tag.putString("rarity", rarity.toString());
-
     super.writeNbt(tag);
   }
 

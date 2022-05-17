@@ -1,6 +1,6 @@
 package com.shmc.luckylootboxes.mixin;
 
-import com.shmc.luckylootboxes.api.LootTableEntryAccessor;
+import com.shmc.luckylootboxes.accessors.LootTableEntryAccessor;
 import net.minecraft.loot.entry.LootTableEntry;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;

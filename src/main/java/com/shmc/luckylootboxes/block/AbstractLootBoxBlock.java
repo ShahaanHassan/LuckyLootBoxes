@@ -1,8 +1,8 @@
 package com.shmc.luckylootboxes.block;
 
-import com.shmc.luckylootboxes.api.ItemEntryAccessor;
-import com.shmc.luckylootboxes.api.LeafEntryAccessor;
-import com.shmc.luckylootboxes.api.LootTableEntryAccessor;
+import com.shmc.luckylootboxes.accessors.ItemEntryAccessor;
+import com.shmc.luckylootboxes.accessors.LeafEntryAccessor;
+import com.shmc.luckylootboxes.accessors.LootTableEntryAccessor;
 import com.shmc.luckylootboxes.block.entity.LootBoxBlockEntity;
 import com.shmc.luckylootboxes.enums.PullRarity;
 import net.fabricmc.fabric.api.loot.v1.FabricLootPool;
@@ -82,7 +82,7 @@ public abstract class AbstractLootBoxBlock extends BlockWithEntity {
         PullRarity pullRarity = getRarity(lootTable, drop, world);
         world.playSound(null, pos, getSoundEvent(pullRarity), SoundCategory.MASTER, 1f, 1f);
         world.setBlockState(pos, state.with(LOOTBOX_RARITY, pullRarity));
-        be.setPulling(pullRarity);
+        be.setPulling();
         dropReward(world, pos, drop);
         if (!player.isCreative()) {
           player.getInventory().getMainHandStack().decrement(ticketCost());

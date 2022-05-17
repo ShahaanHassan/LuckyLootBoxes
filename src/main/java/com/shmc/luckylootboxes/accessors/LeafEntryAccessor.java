@@ -1,4 +1,4 @@
-package com.shmc.luckylootboxes.api;
+package com.shmc.luckylootboxes.accessors;
 
 public interface LeafEntryAccessor {
     int getWeight();
