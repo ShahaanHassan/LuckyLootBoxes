@@ -12,8 +12,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 4,
-                "max": 6
+                "min": 12,
+                "max": 16
               }
             }
           ]
@@ -26,16 +26,11 @@
             {
               "function": "set_count",
               "count": {
-                "min": 4,
-                "max": 6
+                "min": 10,
+                "max": 14
               }
             }
           ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:oak_boat",
-          "weight": 1
         },
         {
           "type": "minecraft:item",
@@ -45,8 +40,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 4,
-                "max": 6
+                "min": 10,
+                "max": 14
               }
             }
           ]
@@ -59,8 +54,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 2,
-                "max": 3
+                "min": 10,
+                "max": 14
               }
             }
           ]
@@ -73,8 +68,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 3,
-                "max": 5
+                "min": 8,
+                "max": 12
               }
             }
           ]
@@ -82,50 +77,21 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:green_bed",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:lantern",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:lily_pad",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:copper_ingot",
-          "weight": 4,
+          "weight": 1,
           "functions": [
             {
               "function": "set_count",
               "count": {
                 "min": 2,
-                "max": 3
+                "max": 2
               }
             }
           ]
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:gunpowder",
-          "weight": 3,
-          "functions": [
-            {
-              "function": "set_count",
-              "count": {
-                "min": 1,
-                "max": 3
-              }
-            }
-          ]
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:leather",
-          "weight": 3,
+          "name": "minecraft:lantern",
+          "weight": 1,
           "functions": [
             {
               "function": "set_count",
@@ -138,14 +104,70 @@
         },
         {
           "type": "minecraft:item",
+          "name": "minecraft:lily_pad",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 6,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:copper_ingot",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 4,
+                "max": 6
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gunpowder",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 4,
+                "max": 8
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:leather",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 6,
+                "max": 10
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
           "name": "minecraft:book",
           "weight": 2,
           "functions": [
             {
               "function": "set_count",
               "count": {
-                "min": 1,
-                "max": 3
+                "min": 4,
+                "max": 6
               }
             }
           ]
@@ -153,7 +175,16 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:bucket",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
@@ -173,8 +204,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 2,
-                "max": 3
+                "min": 4,
+                "max": 6
               }
             }
           ]
@@ -187,8 +218,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 1,
-                "max": 2
+                "min": 6,
+                "max": 10
               }
             }
           ]
@@ -201,8 +232,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 2,
-                "max": 4
+                "min": 6,
+                "max": 8
               }
             }
           ]
@@ -210,7 +241,16 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:cake",
-          "weight": 1
+          "weight": 1,
+          "functions": [
+            {
+              "function": "set_count",
+              "count": {
+                "min": 4,
+                "max": 6
+              }
+            }
+          ]
         },
         {
           "type": "minecraft:item",
@@ -220,8 +260,8 @@
             {
               "function": "set_count",
               "count": {
-                "min": 2,
-                "max": 5
+                "min": 6,
+                "max": 10
               }
             }
           ]
