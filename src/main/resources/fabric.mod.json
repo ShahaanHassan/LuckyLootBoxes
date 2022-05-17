@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "luckylootboxes",
-  "version": "${version}",
+  "version": "0.7.0",
   "name": "Luckylootboxes",
   "description": "Injecting a sense of pride and accomplishment into Minecraft through surprise mechanics",
   "authors": [],
