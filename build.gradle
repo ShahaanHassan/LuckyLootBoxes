@@ -1,10 +1,30 @@
 plugins {
     id 'fabric-loom' version '0.12-SNAPSHOT'
     id 'maven-publish'
+    id "com.matthewprenger.cursegradle" version "1.4.0"
 }
 
 version = project.mod_version
 group = project.maven_group
+
+curseforge {
+    apiKey = System.getenv("curseforge")
+    project {
+        id = '624386'
+        releaseType = 'alpha'
+        addGameVersion project.minecraft_version
+        addGameVersion "Fabric"
+        mainArtifact(remapJar.archiveFile) {
+            displayName = "Luckylootboxes [FABRIC]: ${project.minecraft_version}-${project.version}"
+        }
+    }
+    options {
+        forgeGradleIntegration = false
+    }
+    afterEvaluate {
+        tasks.curseforge624386.dependsOn remapJar
+    }
+}
 
 repositories {
     // Add repositories to retrieve artifacts from in here.
